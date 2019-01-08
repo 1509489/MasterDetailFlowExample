@@ -44,7 +44,8 @@ class ListItemAdapter(private var twoPane: Boolean): ListAdapter<Collection, Lis
             ratingBar.rating = collection.ratings.toFloat()
 
             GlideApp.with(context).load(collection.pictureUrl)
-                .override(200, 300)
+                .centerCrop()
+                .override(500, 300)
                 .into(articleImage)
         }
     }
