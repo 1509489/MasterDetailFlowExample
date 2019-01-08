@@ -1,6 +1,8 @@
 package com.pixelarts.masterdetailflowexample.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +16,8 @@ import com.pixelarts.masterdetailflowexample.R
 import com.pixelarts.masterdetailflowexample.common.GlideApp
 import com.pixelarts.masterdetailflowexample.model.Collection
 
-class ListItemAdapter(private var twoPane: Boolean): ListAdapter<Collection, ListItemAdapter.ViewHolder>(DIFF_CALLBACK) {
+class ListItemAdapter(private val listener: OnItemClickedListener):
+    ListAdapter<Collection, ListItemAdapter.ViewHolder>(DIFF_CALLBACK) {
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListItemAdapter.ViewHolder {
@@ -27,6 +30,10 @@ class ListItemAdapter(private var twoPane: Boolean): ListAdapter<Collection, Lis
         val collection = getItem(position)
         holder.apply {
             setContent(collection)
+        }
+
+        holder.itemView.setOnClickListener {
+            listener.itemClickedListener(position)
         }
     }
 
@@ -45,9 +52,14 @@ class ListItemAdapter(private var twoPane: Boolean): ListAdapter<Collection, Lis
 
             GlideApp.with(context).load(collection.pictureUrl)
                 .centerCrop()
-                .override(500, 300)
+                .override(500, 380)
+                //.optionalCenterCrop()
                 .into(articleImage)
         }
+    }
+
+    interface OnItemClickedListener{
+        fun itemClickedListener(position: Int)
     }
 
     companion object {

@@ -21,13 +21,13 @@
                     android:layout_height="wrap_content" tools:srcCompat="@tools:sample/avatars[6]"
                     app:layout_constraintStart_toStartOf="parent"
                     android:id="@+id/ivArticleImage"
-                    app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
             <TextView
                     android:text="HeadLine"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="8dp" android:id="@+id/tvHeadline"
+                    android:id="@+id/tvHeadline"
                     app:layout_constraintStart_toEndOf="@+id/ivArticleImage" android:layout_marginStart="8dp"
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
@@ -35,7 +35,7 @@
                     android:text="Description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tvDescrption" android:layout_marginTop="8dp"
+                    android:id="@+id/tvDescrption" android:layout_marginTop="4dp"
                     app:layout_constraintTop_toBottomOf="@+id/tvHeadline"
                     app:layout_constraintStart_toEndOf="@+id/ivArticleImage" android:layout_marginStart="8dp"
                     app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
@@ -47,10 +47,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tvAuthor"
                     app:layout_constraintStart_toEndOf="@+id/ivArticleImage" android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/tvDescrption"
+                    android:layout_marginTop="4dp" app:layout_constraintTop_toBottomOf="@+id/tvDescrption"
                     android:textSize="16sp" android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toStartOf="@+id/ratingBar" android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintEnd_toStartOf="@+id/ratingBar"
+            />
             <RatingBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -58,8 +58,8 @@
                     style="@android:style/Widget.DeviceDefault.RatingBar.Small" android:max="5"
                     android:numStars="5"
                     android:rating="5" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/tvDescrption"
-                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"/>
+                    android:layout_marginTop="4dp" app:layout_constraintTop_toBottomOf="@+id/tvDescrption"
+            />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

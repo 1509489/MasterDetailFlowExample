@@ -5,8 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.ImageView
 import com.pixelarts.masterdetailflowexample.R
+import com.pixelarts.masterdetailflowexample.common.GlideApp
 import com.pixelarts.masterdetailflowexample.dummy.DummyContent
+import com.pixelarts.masterdetailflowexample.model.Collection
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 
@@ -18,34 +22,54 @@ import kotlinx.android.synthetic.main.fragment_detail.view.*
  */
 class DetailFragment : Fragment() {
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private var item: DummyContent.DummyItem? = null
+    private var collection: Collection? = null
+    private var twoPane: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            if (it.containsKey(ARG_ITEM_ID)) {
-                // Load the dummy content specified by the fragment
-                // arguments. In a real-world scenario, use a Loader
-                // to load content from a content provider.
-                item = DummyContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
-                activity?.toolbar_layout?.title = item?.content
+            if (it.containsKey(ARG_COLLECTION_ID)) {
+
+                collection = it.getParcelable(ARG_COLLECTION_ID)
+                twoPane = it.getBoolean("twoPane")
+                activity?.toolbar_layout?.title = collection?.headline
             }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_detail, container, false)
 
-        // Show the dummy content as text in a TextView.
-        item?.let {
-            rootView.item_detail.text = it.details
+        collection.let {
+            if (twoPane!!){
+                rootView.ivArticleImage.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+                rootView.ivArticleImage.layoutParams.height = 850
+                rootView.ivArticleImage.scaleType = ImageView.ScaleType.FIT_XY
+
+                GlideApp.with(this).load(it?.pictureUrl)
+                    .into(rootView.ivArticleImage)
+            }
+            else{
+                GlideApp.with(this).load(it?.pictureUrl)
+                    .centerCrop()
+                    .into(rootView.ivArticleImage)
+            }
+
+            rootView.tvArticleHeadline.text = it?.headline
+            rootView.tvArticleDescription.text = "${it?.description}: ${it?.synopsis}"
+            rootView.tvActors.text = it?.actors?.joinToString(", ", "Actors: ", "",-1, "")
+            rootView.tvDirector.text = "Director: ${it?.director}"
+            rootView.tvGenre.text = it?.genre?.joinToString(", ", "Genres: ", "", -1, "")
+            rootView.tvReleaseDate_Duration.text = "Release date: ${it?.releaseDate} \nDuration: ${it?.duration} \n\nPublished date: ${it?.publishedDate}\n\nPublished by: "
+            rootView.ratingBar.rating = it?.ratings!!.toFloat()
+
+            GlideApp.with(this).load(it.author.headshot)
+                .circleCrop()
+                .override(400)
+                .into(rootView.ivAuthorImage)
+
+            rootView.tvAuthor.text = "${it.author.name}\nTwitter: ${it.author.twitter}"
         }
 
         return rootView
@@ -56,6 +80,6 @@ class DetailFragment : Fragment() {
          * The fragment argument representing the item ID that this fragment
          * represents.
          */
-        const val ARG_ITEM_ID = "item_id"
+        const val ARG_COLLECTION_ID = "collection"
     }
 }
