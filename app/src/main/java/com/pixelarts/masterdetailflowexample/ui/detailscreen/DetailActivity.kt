@@ -7,10 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.Toast
 import com.pixelarts.masterdetailflowexample.R
+import com.pixelarts.masterdetailflowexample.base.BaseActivity
+import com.pixelarts.masterdetailflowexample.di.ApplicationComponent
+import com.pixelarts.masterdetailflowexample.di.ApplicationModule
+import com.pixelarts.masterdetailflowexample.di.DaggerApplicationComponent
 import com.pixelarts.masterdetailflowexample.model.Collection
 import com.pixelarts.masterdetailflowexample.ui.detailscreen.fragment.DetailFragment
 import com.pixelarts.masterdetailflowexample.ui.homescreen.HomeActivity
 import kotlinx.android.synthetic.main.activity_detail.*
+import javax.inject.Inject
 
 /**
  * An activity representing a single Item detail screen. This
@@ -18,7 +23,8 @@ import kotlinx.android.synthetic.main.activity_detail.*
  * item details are presented side-by-side with a list of items
  * in a [HomeActivity].
  */
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : BaseActivity<DetailContract.Presenter>(), DetailContract.View {
+    @Inject lateinit var presenter: DetailContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,14 +33,13 @@ class DetailActivity : AppCompatActivity() {
 
         // Show the Up button in the action bar.
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         if (savedInstanceState == null) {
 
             val fragment = DetailFragment().apply {
                 arguments = Bundle().apply {
                     val collection: Collection = intent.getParcelableExtra(DetailFragment.ARG_COLLECTION_ID)
-                    putParcelable(
-                        DetailFragment.ARG_COLLECTION_ID,
-                        collection)
+                    putParcelable(DetailFragment.ARG_COLLECTION_ID, collection)
                 }
             }
 
@@ -43,6 +48,15 @@ class DetailActivity : AppCompatActivity() {
                 .commit()
         }
     }
+
+    override fun init() {
+        DaggerApplicationComponent.builder()
+            .applicationModule(ApplicationModule(this))
+            .build()
+            .injectDetailScreen(this)
+    }
+
+    override fun getPresenterView(): DetailContract.Presenter = presenter
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {

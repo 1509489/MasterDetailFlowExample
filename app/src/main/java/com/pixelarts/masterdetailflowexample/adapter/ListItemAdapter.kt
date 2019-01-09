@@ -38,11 +38,11 @@ class ListItemAdapter(private val listener: OnItemClickedListener):
     }
 
     class ViewHolder(itemView: View, private val context: Context): RecyclerView.ViewHolder(itemView){
-        val headLine: TextView = itemView.findViewById(R.id.tvHeadline)
-        val description: TextView = itemView.findViewById(R.id.tvDescrption)
-        val author: TextView = itemView.findViewById(R.id.tvAuthor)
-        val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBar)
-        val articleImage: ImageView = itemView.findViewById(R.id.ivArticleImage)
+        private val headLine: TextView = itemView.findViewById(R.id.tvHeadline)
+        private val description: TextView = itemView.findViewById(R.id.tvDescrption)
+        private val author: TextView = itemView.findViewById(R.id.tvAuthor)
+        private val ratingBar: RatingBar = itemView.findViewById(R.id.ratingBar)
+        private val articleImage: ImageView = itemView.findViewById(R.id.ivArticleImage)
 
         fun setContent(collection: Collection){
             headLine.text = collection.headline
